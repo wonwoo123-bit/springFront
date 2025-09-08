@@ -1,7 +1,9 @@
 package com.spring.application.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +50,25 @@ public class NoticeDAOImpl implements NoticeDAO{
 
     @Override
     public List<NoticeVO> selectSearchNoticeList(PageMaker pageMaker) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        int startRow = pageMaker.getStartRow();
+        int endRow = startRow + pageMaker.getPerPageNum();
+
+        Map<String, Object> dataParam = new HashMap<String, Object>();
+        dataParam.put("startRow", startRow);
+        dataParam.put("endRow", endRow);
+        dataParam.put("searchType", pageMaker.getSearchType());
+        dataParam.put("keyword", pageMaker.getKeywoed());
+
+        List<NoticeVO> noticeList
+        = sqlSession.selectList("Notice-Mapper.selectSearchNoticeList",dataParam);
+
+        return noticeList;
     }
 
     @Override
     public int selectSearchNoticeListCount(PageMaker pageMaker) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        int count = sqlSession.selectOne("Notice-Mapper.selectSearchNoticeListCount",pageMaker);
+        return count;
     }
 
     @Override

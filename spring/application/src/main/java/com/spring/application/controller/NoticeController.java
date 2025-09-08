@@ -1,0 +1,30 @@
+package com.spring.application.controller;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.spring.application.command.PageMaker;
+import com.spring.application.dto.NoticeVO;
+import com.spring.application.service.NoticeService;
+
+
+@Controller
+@RequestMapping("/notice")
+public record NoticeController(NoticeService noticeService) {
+
+    @GetMapping("/list")
+    public String list(PageMaker pageMaker, Model model) throws Exception{
+    String url = "/notice/list";
+
+        List<NoticeVO> noticelList = noticeService.list(pageMaker);
+
+        model.addAttribute("noticeList",noticelList);
+
+        return url;
+    }
+
+}

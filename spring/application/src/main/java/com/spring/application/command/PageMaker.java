@@ -43,5 +43,14 @@ public class PageMaker {
 
         prev = startPage ==1 ? false : true;
         next = endPage < realEndPage ? true : false;
+
     }
+
+    public void setTotalCount(int totalCount){
+        this.totalCount = totalCount;
+
+        calcData();
+    }
+
+
 }
