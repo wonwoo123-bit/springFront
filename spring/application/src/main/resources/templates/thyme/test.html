@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    text로 객체 인출 : [[${notice.writer}]]<br>
+    tag 속성값 : <input type="text" th:value="${notice.content}" /><br>
+    tag의 text노드 : <p th:text="${notice.content}"></p><br>
+    url 지정 : <a th:href="@{/notice/list}">공지사항</a><br>
+    html text와 혼용 : <a th:href="|javascript:alert('${notice.nno}');|">dfsa</a><br>
+
+    <th:block th:each="ch : ${#numbers.sequence(1,10)}">
+        [[${ch}]] &nbsp;&nbsp;
+    </th:block>
+
+    <script>
+        console.log('[[${#dates.format(notice.regDate,'yyyy - MM - dd')}]]')
+    </script>
+</body>
+
+</html>

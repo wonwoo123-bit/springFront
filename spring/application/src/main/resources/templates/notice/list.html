@@ -277,14 +277,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <div id="keyword" class="card-tools">
               <div class="input-group row">
-                <select class="form-control col-md-3" name="perPageNum" id="perPageNum" onchange="search_list(1);">
+                <select class="form-control col-md-3" name="perPageNum" id="perPageNum"
+                  th:field="*{pageMaker.perPageNum}" onchange="search_list(1);">
                   <option th:value="10">정렬개수</option>
                   <option th:value="20">20개씩</option>
                   <option th:value="50">50개씩</option>
                   <option th:value="100">100개씩</option>
-
                 </select>
-                <select class="form-control col-md-4" name="searchType" id="searchType">
+
+                <select class="form-control col-md-4" name="searchType" id="searchType"
+                  th:field="*{pageMaker.searchType}">
                   <option th:value="tcw">전 체</option>
                   <option th:value="t">제 목</option>
                   <option th:value="w">작성자</option>
@@ -292,7 +294,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <option th:value="tc">제목+내용</option>
                   <option th:value="cw">작성자+내용</option>
                 </select>
-                <input class="form-control" type="text" name="keyword" placeholder="검색어를 입력하세요." />
+                <input class="form-control" type="text" name="keyword" placeholder="검색어를 입력하세요."
+                  th:value="${pageMaker.keyword}" />
                 <span class="input-group-append">
                   <button class="btn btn-primary" type="button" onclick="search_list(1);" data-card-widget="search">
                     <i class="fa fa-fw fa-search"></i>
@@ -336,6 +339,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <i class="fas fa-angle-double-left"></i>
                   </a>
                 </li>
+
+                <li class="page-item">
+                  <a class="page-link"
+                    th:href="|javascript:search_list(${pageMaker.prev ? pageMaker.startPage-1 : pageMaker.page});|">
+                    <i class="fas fa-angle-left"></i>
+                  </a>
+                </li>
+
+                <th:block th:each="pageNum : ${#numbers.sequence(pageMaker.startPage, pageMaker.endPage)}">
+                  <li th:class="|page-item ${pageNum eq pageMaker.page ? 'active' : ''}|">
+                    <a class="page-link" th:href="|javascript:search_list(${pageNum});|" th:text="${pageNum}"></a>
+                  </li>
+                </th:block>
+
+                <li class="page-item">
+                  <a class="page-link"
+                    th:href="|javascript:search_list(${pageMaker.next ? pageMaker.endPage+1 : pageMaker.page});|">
+                    <i class="fas fa-angle-right"></i>
+                  </a>
+                </li>
+
+                 <li class="page-item">
+                  <a class="page-link" th:href="|javascript:search_list(${pageMaker.endPage});|">
+                    <i class="fas fa-angle-double-right"></i>
+                  </a>
+                </li>
+
               </ul>
             </nav>
           </div>
@@ -391,10 +421,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
       // alert(perPageNum+":"+searchType+":"+keyword);
 
       let form = document.querySelector("#jobForm");
-      form.page.value=page;
-      form.perPageNum.value=perPageNum;
-      form.searchType.value=searchType;
-      form.keyword.value=keyword;
+      form.page.value = page;
+      form.perPageNum.value = perPageNum;
+      form.searchType.value = searchType;
+      form.keyword.value = keyword;
 
       form.submit();
     }

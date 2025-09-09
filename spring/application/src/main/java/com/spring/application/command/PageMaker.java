@@ -41,7 +41,7 @@ public class PageMaker {
             endPage = realEndPage;
         }
 
-        prev = startPage ==1 ? false : true;
+        prev = startPage == 1 ? false : true;
         next = endPage < realEndPage ? true : false;
 
     }

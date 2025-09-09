@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.application.command.PageMaker;
@@ -17,7 +18,7 @@ import com.spring.application.service.NoticeService;
 public record NoticeController(NoticeService noticeService) {
 
     @GetMapping("/list")
-    public String list(PageMaker pageMaker, Model model) throws Exception{
+    public String list(@ModelAttribute(name="pageMaker") PageMaker pageMaker, Model model) throws Exception{
     String url = "/notice/list";
 
         List<NoticeVO> noticelList = noticeService.list(pageMaker);
