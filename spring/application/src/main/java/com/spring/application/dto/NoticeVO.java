@@ -1,5 +1,7 @@
 package com.spring.application.dto;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,4 +15,5 @@ public class NoticeVO {
     private String writer;
     private String content = "";
     private int viewcnt = 0;
+    private Date regDate;
 }
