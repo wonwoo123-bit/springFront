@@ -11,7 +11,7 @@ public class PageMaker {
     private int page = 1;
     private int perPageNum = 10;
     private String searchType = "";
-    private String keywoed = "";
+    private String keyword = "";
 
     private int totalCount;
     private int startPage = 1;

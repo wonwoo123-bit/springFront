@@ -57,7 +57,7 @@ public class NoticeDAOImpl implements NoticeDAO{
         dataParam.put("startRow", startRow);
         dataParam.put("endRow", endRow);
         dataParam.put("searchType", pageMaker.getSearchType());
-        dataParam.put("keyword", pageMaker.getKeywoed());
+        dataParam.put("keyword", pageMaker.getKeyword());
 
         List<NoticeVO> noticeList
         = sqlSession.selectList("Notice-Mapper.selectSearchNoticeList",dataParam);
