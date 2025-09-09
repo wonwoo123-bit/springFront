@@ -27,5 +27,10 @@ public record NoticeController(NoticeService noticeService) {
 
         return url;
     }
+    @GetMapping("/registForm")
+    public String registForm()throws Exception{
+        String url="/notice/regist";
+        return url;
+    }
 
 }

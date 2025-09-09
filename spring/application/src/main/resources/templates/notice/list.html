@@ -1,32 +1,12 @@
-<!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="~{modules/header.html}" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Starter</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" th:href="@{/bootstrap/plugins/fontawesome-free/css/all.min.css}">
-  <!-- Theme style -->
-  <link rel="stylesheet" th:href="@{/bootstrap/dist/css/adminlte.min.css}">
-
-  <style>
+<style>
     table#noticeTable th,
     td {
       text-align: center;
     }
   </style>
-</head>
 
-<body class="hold-transition sidebar-mini">
   <div class="wrapper">
 
     <!-- Navbar -->
@@ -272,7 +252,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <section class="content">
         <div class="card">
           <div class="card-header with-border">
-            <button type="button" class="btn btn-primary" id="registBtn" onclick="">공지등록</button>
+            <button type="button" class="btn btn-primary" id="registBtn"
+              onclick="OpenWindow('registForm','공지등록',700,800)">공지등록</button>
 
 
             <div id="keyword" class="card-tools">
@@ -334,6 +315,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="card-footer">
             <nav aria-label="Navigation">
               <ul class="pagination justify-content-center m-0">
+
                 <li class="page-item">
                   <a class="page-link" href="javascript:search_list(1);">
                     <i class="fas fa-angle-double-left"></i>
@@ -355,13 +337,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <li class="page-item">
                   <a class="page-link"
-                    th:href="|javascript:search_list(${pageMaker.next ? pageMaker.endPage+1 : pageMaker.page});|">
+                    th:href="|javascript:search_list(${pageMaker.next ? (pageMaker.endPage+1) : pageMaker.page});|">
                     <i class="fas fa-angle-right"></i>
                   </a>
                 </li>
 
-                 <li class="page-item">
-                  <a class="page-link" th:href="|javascript:search_list(${pageMaker.endPage});|">
+                <li class="page-item">
+                  <a class="page-link" th:href="|javascript:search_list(${pageMaker.realEndPage});|">
                     <i class="fas fa-angle-double-right"></i>
                   </a>
                 </li>
@@ -397,13 +379,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- ./wrapper -->
 
   <!-- REQUIRED SCRIPTS -->
-
-  <!-- jQuery -->
-  <script th:src="@{/bootstrap/plugins/jquery/jquery.min.js}"></script>
-  <!-- Bootstrap 4 -->
-  <script th:src="@{/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-  <!-- AdminLTE App -->
-  <script th:src="@{/bootstrap/dist/js/adminlte.min.js}"></script>
+  <th:block th:insert="~{modules/common_js.html}" />
+  
 
   <form id="jobForm">
     <input type="hidden" name="page" value="">
@@ -429,6 +406,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
       form.submit();
     }
   </script>
-</body>
 
-</html>
+  <script>
+    function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
+      var winleft = (screen.width - WinWidth) / 2;
+      var wintop = (screen.height - WinHeight) / 2;
+      var win = window.open(
+        UrlStr,
+        WinTitle,
+        "scrollbars=yes,width=" + WinWidth +
+        ",height=" + WinHeight +
+        ",top=" + wintop +
+        ",left=" + winleft +
+        ",resizable=yes,status=yes");
+        win.focus();
+    }
+  </script>
+<th:block th:insert="~{modules/footer.html}" />
