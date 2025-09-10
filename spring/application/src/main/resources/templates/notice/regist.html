@@ -73,8 +73,30 @@
         placeholder:'여기에 내용을 적으세요',
         lang:'ko-KR',
         height:250,
-        disableResizeEditor: true
+        disableResizeEditor: true,
+        callbacks:{
+            onImageUpload : function(files, editor, welEditable){
+                for(let file of files){
+                    // alert(file.name);
+                    if(file.name.substring(file.name.lastIndexOf(".") + 1).toUpperCase() != "JPG"){
+                        alert("JPG형식만 가능");
+                        return;
+                    }
+                    if(file.size > 1024*1024*1){
+                        alert("이미지는 1MB 미만 가능");
+                        return;
+                    }
+                }
+                for (var file of files){
+                    sendFile(file,this);
+                }
+
+            }
+        }
     });
+    function sendFile(fil, el){
+        var form_date = new FormData();
+    }
 </script>
 
 <th:block th:insert="~{modules/footer.html}" />
