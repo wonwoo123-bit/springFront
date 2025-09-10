@@ -12,6 +12,11 @@ function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
     win.focus();
   }
 
+  function CloseWindow(){
+    window.opener.location.reload(true);
+    window.close();
+  }
+
   var contextPath ="";
   function summernote_go(target,context){
     contextPath=context;

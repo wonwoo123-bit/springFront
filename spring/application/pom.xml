@@ -84,6 +84,11 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.11.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.XSS.html</groupId>
+			<artifactId>html-filter</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

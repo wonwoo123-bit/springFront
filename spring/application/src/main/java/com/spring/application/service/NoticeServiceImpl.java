@@ -18,9 +18,11 @@ public class NoticeServiceImpl implements NoticeService{
     private NoticeDAO noticeDAO;
 
     @Override
+    @Transactional
     public NoticeVO detail(int nno) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        NoticeVO notice = noticeDAO.selectNoticeByNno(nno);
+        noticeDAO.increaseViewCount(nno);
+        return notice;
     }
 
     @Override

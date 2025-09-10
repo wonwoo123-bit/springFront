@@ -1,5 +1,6 @@
 package com.spring.application.command;
 
+import com.josephoconnell.html.HTMLInputFilter;
 import com.spring.application.dto.NoticeVO;
 
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class NoticeRegistCommand {
         NoticeVO notice = new NoticeVO();
         notice.setContent(content);
         notice.setWriter(writer);
-        notice.setTitle(title);
+        notice.setTitle(HTMLInputFilter.htmlSpecialChars(this.title));
         return notice;
     }
 

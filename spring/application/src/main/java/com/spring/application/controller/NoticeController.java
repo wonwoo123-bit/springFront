@@ -42,6 +42,11 @@ public record NoticeController(NoticeService noticeService) {
 
         return url;
     }
-    
+    @GetMapping("/detail")
+    public String detail(int nno, Model model) throws Exception{
+        String url = "/notice/detail";
+        model.addAttribute("notice", noticeService.detail(nno));
+        return url;
+    }
 
 }

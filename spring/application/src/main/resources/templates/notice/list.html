@@ -298,9 +298,9 @@
             </thead>
             <tbody>
               <th:block th:each="notice : ${noticeList}">
-                <tr style="font-size: 0.85em;cursor: pointer;">
+                <tr style="font-size: 0.85em;cursor: pointer;" th:onclick="|OpenWindow('detail?nno=${notice.nno}','상세보기',700,800);|">
                   <td th:text="${notice.nno}"></td>
-                  <td th:text="${notice.title}"
+                  <td th:utext="${notice.title}"
                     style="text-align: left;max-width: 100px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; ">
                   </td>
                   <td th:text="${notice.writer}"></td>
@@ -344,6 +344,4 @@
 
 <!-- REQUIRED SCRIPTS -->
 <th:block th:insert="~{modules/common_js.html}" />
-
-
 <th:block th:insert="~{modules/footer.html}" />

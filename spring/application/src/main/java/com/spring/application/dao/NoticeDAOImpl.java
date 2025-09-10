@@ -26,7 +26,7 @@ public class NoticeDAOImpl implements NoticeDAO{
 
     @Override
     public void increaseViewCount(int nno) throws SQLException {
-        // TODO Auto-generated method stub
+        sqlSession.update("Notice-Mapper.increaseViewCount",nno);
         
     }
 
@@ -38,8 +38,8 @@ public class NoticeDAOImpl implements NoticeDAO{
 
     @Override
     public NoticeVO selectNoticeByNno(int nno) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        NoticeVO notice = sqlSession.selectOne("Notice-Mapper.selectNoticeByNno",nno);
+        return notice;
     }
 
     @Override
