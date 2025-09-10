@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.application.command.PageMaker;
 import com.spring.application.dao.NoticeDAO;
@@ -46,8 +47,11 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
+    @Transactional
     public void regist(NoticeVO notice) throws SQLException {
-        // TODO Auto-generated method stub
+        int nno = noticeDAO.selectNoticeSequenceNextValue();
+        notice.setNno(nno);
+        noticeDAO.insertNotice(notice);
         
     }
 

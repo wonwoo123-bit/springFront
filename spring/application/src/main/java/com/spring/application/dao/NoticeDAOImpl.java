@@ -31,8 +31,8 @@ public class NoticeDAOImpl implements NoticeDAO{
     }
 
     @Override
-    public void insertNotice(NoticeVO Notice) throws SQLException {
-        // TODO Auto-generated method stub
+    public void insertNotice(NoticeVO notice) throws SQLException {
+        sqlSession.insert("Notice-Mapper.insertNotice",notice);
         
     }
 
@@ -44,8 +44,8 @@ public class NoticeDAOImpl implements NoticeDAO{
 
     @Override
     public int selectNoticeSequenceNextValue() throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        int nno = sqlSession.selectOne("Notice-Mapper.selectNoticeSequenceNextValue");
+        return nno;
     }
 
     @Override
