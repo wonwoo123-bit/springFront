@@ -1,26 +1,25 @@
 <th:block th:insert="~{modules/header.html}" />
-
- <!-- summernote -->
-<link rel="stylesheet" th:href="@{/bootstrap/plugins/summernote/summernote-bs4.min.css}">
+<!-- summernote -->
+<link rel="stylesheet" th:href="@{/bootstrap/plugins/summernote/summernote-bs4.min.css}" />
 
 <!-- Main content -->
- <section class="content-header">
+<section class="content-header">
     <div class="container-fluid">
         <div class="row md-2">
             <div class="col-sm-6">
-                <h1>공지등록</h1>  				
+                <h1>공지등록</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item">
-                  <a href="list.do">
-                      <i class="fa fa-dashboard"></i>공지사항
-                  </a>
-              </li>
-              <li class="breadcrumb-item active">
-                  등록
-              </li>		        
-        </ol>
+                    <li class="breadcrumb-item">
+                        <a href="list.do">
+                            <i class="fa fa-dashboard"></i>공지사항
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        등록
+                    </li>
+                </ol>
             </div>
         </div>
     </div>
@@ -28,74 +27,95 @@
 
 <!-- Main content -->
 <section class="content container-fluid">
-  <div class="row justify-content-center">
-      <div class="col-md-9" style="max-width:960px;">
-          <div class="card card-outline card-info">
-              <div class="card-header">
-                  <h3 class="card-title p-1">공지등록</h3>
-                  <div class ="card-tools">
-                      <button type="button" class="btn btn-primary" id="registBtn" onclick="regist_go();">등 록</button>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      <button type="button" class="btn btn-warning" id="cancelBtn" onclick="CloseWindow();" >취 소</button>
-                  </div>
-              </div><!--end card-header  -->
-              <div class="card-body pad">
-                  <form role="form" method="post" action="regist.do" name="registForm">
-                      <div class="form-group">
-                          <label for="title">제 목</label> 
-                          <input type="text" id="title"  title="제목"
-                              name='title' class="form-control notNull" placeholder="제목을 쓰세요">
-                      </div>							
-                      <div class="form-group">
-                          <label for="writer">작성자</label> 
-                          <input type="text" id="writer" title="작성자" name="writer" class="form-control notNull" >
-                      </div>
-                      <div class="form-group">
-                          <label for="content">내 용</label>
-                          <textarea class="textarea" name="content" id="content" rows="20"
-                              cols="90" placeholder="1000자 내외로 작성하세요." ></textarea>
-                      </div>
-                  </form>
-              </div><!--end card-body  -->
-              <div class="card-footer" style="display:none">
-              
-              </div><!--end card-footer  -->
-          </div><!-- end card -->				
-      </div><!-- end col-md-12 -->
-  </div><!-- end row -->
+    <div class="row justify-content-center">
+        <div class="col-md-9" style="max-width:960px;">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h3 class="card-title p-1">공지등록</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-primary" id="registBtn" onclick="regist_go();">등 록</button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-warning" id="cancelBtn" onclick="CloseWindow();">취
+                            소</button>
+                    </div>
+                </div><!--end card-header  -->
+                <div class="card-body pad">
+                    <form role="form" method="post" action="regist.do" name="registForm">
+                        <div class="form-group">
+                            <label for="title">제 목</label>
+                            <input type="text" id="title" title="제목" name='title' class="form-control notNull"
+                                placeholder="제목을 쓰세요">
+                        </div>
+                        <div class="form-group">
+                            <label for="writer">작성자</label>
+                            <input type="text" id="writer" title="작성자" name="writer" class="form-control notNull">
+                        </div>
+                        <div class="form-group">
+                            <label for="content">내 용</label>
+                            <textarea class="textarea" name="content" id="content" rows="20" cols="90"
+                                placeholder="1000자 내외로 작성하세요."></textarea>
+                        </div>
+                    </form>
+                </div><!--end card-body  -->
+                <div class="card-footer" style="display:none">
+
+                </div><!--end card-footer  -->
+            </div><!-- end card -->
+        </div><!-- end col-md-12 -->
+    </div><!-- end row -->
 </section>
+
+
 <th:block th:insert="~{modules/common_js.html}" />
 <!-- Summernote -->
 <script th:src="@{/bootstrap/plugins/summernote/summernote-bs4.min.js}"></script>
 
+
 <script>
     $("#content").summernote({
-        placeholder:'여기에 내용을 적으세요',
-        lang:'ko-KR',
-        height:250,
+        placeholder: '여기에 내용을 적으세요.',
+        lang: 'ko-KR',
+        height: 250,
         disableResizeEditor: true,
-        callbacks:{
-            onImageUpload : function(files, editor, welEditable){
-                for(let file of files){
-                    // alert(file.name);
-                    if(file.name.substring(file.name.lastIndexOf(".") + 1).toUpperCase() != "JPG"){
-                        alert("JPG형식만 가능");
+        callbacks: {
+            onImageUpload: function (files, editor, welEditable) {
+                for (let file of files) {
+                    //alert(file.name);
+                    if (file.name.substring(file.name.lastIndexOf(".") + 1).toUpperCase() != "JPG") {
+                        alert("JPG 이미지형식만 가능합니다.");
                         return;
                     }
-                    if(file.size > 1024*1024*1){
-                        alert("이미지는 1MB 미만 가능");
+                    if (file.size > 1024 * 1024 * 1) {
+                        alert("이미지는 1MB 미만입니다.");
                         return;
                     }
-                }
-                for (var file of files){
-                    sendFile(file,this);
                 }
 
+                for (var file of files) {
+                    sendFile(file, this);
+                }
             }
         }
+
     });
-    function sendFile(fil, el){
-        var form_date = new FormData();
+    function sendFile(file, el) {
+        var form_data = new FormData();
+        form_data.append("file", file);
+
+        $.ajax({
+            url: "[[@{/summernote/uploadImg}]]",
+            method: "post",
+            data: form_data,
+            contentType: false,
+            processData: false,
+            success: function (img_url) {
+                //    alert(img_url);
+                $(el).summernote('editor.insertImage', img_url);
+            },
+            error: function (error) {
+                alert("서버 장애로 이미지 추가가 불가합니다.");
+            }
+        });
     }
 </script>
 
