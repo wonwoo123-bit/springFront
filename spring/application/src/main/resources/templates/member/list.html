@@ -1,0 +1,95 @@
+<th:block th:insert="~{modules/header.html}" />
+
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+
+    <!-- Main content -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row md-2">
+                <div class="col-sm-6">
+                    <h1>회원목록</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">
+                            <a href="list.do">
+                                <i class="fa fa-dashboard"></i>회원관리
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            목록
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="content">
+        <div class="card">
+            <div class="card-header with-border">
+
+                <button type="button" class="btn btn-primary" onclick="">회원등록</button>
+
+                <div id="keyword" class="card-tools" style="width:550px;">
+                    <div class="input-group row">
+                        <!-- search bar -->
+                        <!-- sort num -->
+                        <select class="form-control col-md-3" name="perPageNum" id="perPageNum"
+                            th:filed="*{pageMaker.perPageNum}" onchange="search_list(1);">
+                            <option value="10">정렬개수</option>
+                            <option value="2">2개씩 정렬</option>
+                            <option value="3">3개씩 정렬</option>
+                        </select>
+
+                        <!-- search bar -->
+                        <select class="form-control col-md-3" name="searchType" id="searchType"
+                            th:filed="*{pageMaker.perPageNum}">
+                            <option value="">검색구분</option>
+                            <option th:value="i">아이디</option>
+                            <option th:value="n">이 름</option>
+                            <option th:value="p">전화번호</option>
+                            <option th:value="e">이메일</option>
+                        </select>
+                        <!-- keyword -->
+                        <input class="form-control" type="text" name="keyword" placeholder="검색어를 입력하세요." 
+                        th:value="${pageMaker.keyword}"/>
+                        <span class="input-group-append">
+                            <button class="btn btn-primary" type="button" onclick="search_list(1);" id="searchBtn"
+                                data-card-widget="search">
+                                <i class="fa fa-fw fa-search"></i>
+                            </button>
+                        </span>
+                        <!-- end : search bar -->
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" style="text-align:center;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>사진</th>
+                                <th>아이디</th>
+                                <th>패스워드</th>
+                                <th>이 름</th>
+                                <th>이메일</th>
+                                <th>전화번호</th>
+                                <th>등록날짜</th> <!-- yyyy-MM-dd  -->
+                            </tr>
+                        </table>
+                    </div> <!-- col-sm-12 -->
+                </div> <!-- row -->
+            </div> <!-- card-body -->
+            <div class="card-footer">
+                <!-- pagination --><th:block th:insert="~{modules/pagination.html}" />
+            </div>
+        </div>
+    </section>
+
+</div>
+<!-- ./wrapper -->
+<th:block th:insert="~{modules/common_js.html}" />
+<th:block th:insert="~{modules/footer.html}" />

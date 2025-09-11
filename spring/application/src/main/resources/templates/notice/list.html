@@ -8,9 +8,9 @@
 </style>
 
 <div class="wrapper">
-  
+
   <!-- Content Wrapper. Contains page content -->
-  <div >
+  <div>
     <!-- Main content -->
     <section class="content-header">
       <div class="container-fluid">
@@ -83,7 +83,8 @@
             </thead>
             <tbody>
               <th:block th:each="notice : ${noticeList}">
-                <tr style="font-size: 0.85em;cursor: pointer;" th:onclick="|OpenWindow('detail?nno=${notice.nno}','상세보기',700,800);|">
+                <tr style="font-size: 0.85em;cursor: pointer;"
+                  th:onclick="|OpenWindow('detail?nno=${notice.nno}','상세보기',700,800);|">
                   <td th:text="${notice.nno}"></td>
                   <td th:utext="${notice.title}"
                     style="text-align: left;max-width: 100px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; ">
@@ -105,7 +106,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-  
+
 </div>
 <!-- ./wrapper -->
 

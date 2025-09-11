@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,31 +33,22 @@ public class MemberDAOImpl implements MemberDAO{
 
     @Override
     public MemberVO selectMemberById(String id) throws SQLException {
-        MemberVO member = sqlSession.selectOne("Member-Mapper.selectMemberById",id);
-        return member;
+        return sqlSession.selectOne("Member-Mapper.selectMemberById",id); 
     }
 
     @Override
     public List<MemberVO> selectSearchMemberList(PageMaker pageMaker) throws SQLException {
-        int startRow = pageMaker.getStartRow();
-        int endRow = startRow + pageMaker.getPerPageNum();
+       int offset = pageMaker.getStartRow() -1;
+       int limit = pageMaker.getPerPageNum();
 
-        Map<String, Object> dataParam = new HashMap<String, Object>();
-        dataParam.put("startRow", startRow);
-        dataParam.put("endRow", endRow);
-        dataParam.put("searchType", pageMaker.getSearchType());
-        dataParam.put("keyword", pageMaker.getKeyword());
+       RowBounds rows = new RowBounds(offset, limit);
 
-        List<MemberVO> memberList
-        = sqlSession.selectList("Member-Mapper.selectSearchMemberList",dataParam);
-
-        return memberList;
+        return sqlSession.selectList("Member-Mapper.selectSearchMemberList",pageMaker,rows);
     }
 
     @Override
     public int selectSearchMemberListCount(PageMaker pageMaker) throws SQLException {
-        int cnt = sqlSession.selectOne("Member-Mapper.selectSearchMemberListCount",pageMaker);
-        return cnt;
+        return sqlSession.selectOne("Member-Mapper.selectSearchMemberListCount",pageMaker);
     }
 
     @Override

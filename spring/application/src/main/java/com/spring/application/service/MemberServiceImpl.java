@@ -1,49 +1,56 @@
 package com.spring.application.service;
 
+
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.application.command.PageMaker;
+import com.spring.application.dao.MemberDAO;
 import com.spring.application.dto.MemberVO;
 
-@Repository
+@Service
 public class MemberServiceImpl implements MemberService{
 
+    @Autowired
+    private MemberDAO memberDAO;
+
+    
+
     @Override
-    public MemberVO detail(String id) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+    public MemberVO getMember(String id) throws SQLException {
+        
+        MemberVO member = memberDAO.selectMemberById(id);
+        return member;
     }
 
     @Override
-    public MemberVO getNotice(String id) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
+    @Transactional
     public List<MemberVO> list(PageMaker pageMaker) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        List<MemberVO> memberList = memberDAO.selectSearchMemberList(pageMaker);
+
+        pageMaker.setTotalCount(memberDAO.selectSearchMemberListCount(pageMaker));
+        return memberList;
     }
 
     @Override
     public void modify(MemberVO member) throws SQLException {
-        // TODO Auto-generated method stub
+        memberDAO.updateMember(member);
         
     }
 
     @Override
     public void regist(MemberVO member) throws SQLException {
-        // TODO Auto-generated method stub
+        memberDAO.insertMember(member);
         
     }
 
     @Override
     public void remove(String id) throws SQLException {
-        // TODO Auto-generated method stub
+        memberDAO.deleteMember(id);
         
     }
     

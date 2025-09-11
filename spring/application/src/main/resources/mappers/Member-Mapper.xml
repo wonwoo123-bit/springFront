@@ -17,7 +17,7 @@
 	</select>
 
     <select id="selectSearchMemberListCount" resultType="int">
-        select * from member
+        select count(*) from member
         <include refid="search"/> 
     </select>
         
