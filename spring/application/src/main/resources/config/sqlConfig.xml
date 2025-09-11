@@ -7,5 +7,6 @@
         <typeAlias type="java.lang.Integer" alias="int" />
 
         <typeAlias type="com.spring.application.dto.NoticeVO" alias="notice" />
+        <typeAlias type="com.spring.application.dto.MemberVO" alias="member" />
     </typeAliases>
   </configuration>
