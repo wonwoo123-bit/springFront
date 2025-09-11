@@ -1,13 +1,13 @@
 package com.spring.application.dto;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.Date;
 
-@NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class MemberVO {
     private String id;
     private String pwd;
@@ -16,7 +16,7 @@ public class MemberVO {
     private int enabled;
     private Date regDate;
     private String phone;
-    private String name;
+    private String name="---";
     private String register;
     private String address;
     private String authority;
