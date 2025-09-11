@@ -27,8 +27,8 @@ public class NoticeServiceImpl implements NoticeService{
 
     @Override
     public NoticeVO getNotice(int nno) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        NoticeVO notice = noticeDAO.selectNoticeByNno(nno);
+        return notice;
     }
 
     @Override
@@ -44,7 +44,8 @@ public class NoticeServiceImpl implements NoticeService{
 
     @Override
     public void modify(NoticeVO notice) throws SQLException {
-        // TODO Auto-generated method stub
+        
+        noticeDAO.updateNotice(notice);
         
     }
 
@@ -59,7 +60,7 @@ public class NoticeServiceImpl implements NoticeService{
 
     @Override
     public void remove(int nno) throws SQLException {
-        // TODO Auto-generated method stub
+        noticeDAO.deleteNotice(nno);
         
     }
     

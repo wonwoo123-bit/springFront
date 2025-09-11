@@ -20,7 +20,7 @@ public class NoticeDAOImpl implements NoticeDAO{
 
     @Override
     public void deleteNotice(int nno) throws SQLException {
-        // TODO Auto-generated method stub
+        sqlSession.delete("Notice-Mapper.deleteNotice",nno);
         
     }
 
@@ -72,8 +72,8 @@ public class NoticeDAOImpl implements NoticeDAO{
     }
 
     @Override
-    public void updateNotice(NoticeVO Notice) throws SQLException {
-        // TODO Auto-generated method stub
+    public void updateNotice(NoticeVO notice) throws SQLException {
+        sqlSession.update("Notice-Mapper.updateNotice",notice);
         
     }
     
