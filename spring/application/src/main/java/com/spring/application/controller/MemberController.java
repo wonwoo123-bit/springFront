@@ -2,11 +2,17 @@ package com.spring.application.controller;
 
 import java.beans.Expression;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.rmi.server.ExportException;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,6 +99,40 @@ public record MemberController(MemberService memberService , @Value("${member.pi
     @GetMapping("/detail")
     public ModelAndView detail(String id, ModelAndView mnv) throws Exception{
         String url = "/member/detail";
+        
+        MemberVO member = memberService.getMember(id);
+
+        mnv.addObject("member", member);
+        mnv.setViewName(url);
+        return mnv;
+    }
+
+    @GetMapping("/getPicture")
+    @ResponseBody
+    public ResponseEntity<byte[]> getPicture(String id) throws Exception{
+        ResponseEntity entity = null;
+        MemberVO member = memberService.getMember(id);
+
+        if(member == null)
+        return new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+
+        String picture = member.getPicture();
+        String imgPath = this.picturePath;
+        InputStream in = null;
+        try{
+            in = new FileInputStream(new File(imgPath,picture));
+            entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in),HttpStatus.OK);
+            return entity;
+        }finally{
+            if(in != null)
+            in.close();
+        }
+    }
+
+    @GetMapping("/modifyForm")
+    public ModelAndView modifyForm(String id, ModelAndView mnv) throws Exception{
+        String url = "/member/modify";
+
         MemberVO member = memberService.getMember(id);
 
         mnv.addObject("member", member);

@@ -85,3 +85,17 @@ function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
             }
         });
     }
+
+    function MemberPictureThumb(contextPath){
+        for(let target of document.querySelectorAll('.manPicture')){
+            let id = target.getAttribute('data-id');
+        if (id) {
+            target.style.backgroundImage = `url('${contextPath}member/getPicture?id=${id}')`;
+            target.style.backgroundRepeat = "no-repeat";
+            target.style.backgroundSize = "cover";
+            target.style.backgroundPosition = "center";
+        }
+
+
+        }
+    }
