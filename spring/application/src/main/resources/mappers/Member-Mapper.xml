@@ -24,8 +24,8 @@
     <select id="selectMemberById" resultType="member"> select * from member
         where id= #{id} </select>
 
-    <update id="insertMember" parameterType="member"> insert into member(id,pwd,email,picture,phone,name,address,register)
-        values(#{id},#{pwd},#{email},#{picture},#{phone},#{name},#{address},#{register}) </update>
+    <insert id="insertMember" parameterType="member"> insert into member(id,pwd,email,picture,phone,name,address,register)
+        values(#{id},#{pwd},#{email},#{picture},#{phone},#{name},#{address},#{register}) </insert>
 
 
     <update id="updateMember" parameterType="member"> update member set
