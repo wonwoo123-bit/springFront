@@ -1,9 +1,7 @@
 package com.spring.application.dao;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -38,7 +36,7 @@ public class MemberDAOImpl implements MemberDAO{
 
     @Override
     public List<MemberVO> selectSearchMemberList(PageMaker pageMaker) throws SQLException {
-       int offset = pageMaker.getStartRow() -1;
+       int offset = pageMaker.getStartRow() ;
        int limit = pageMaker.getPerPageNum();
 
        RowBounds rows = new RowBounds(offset, limit);
