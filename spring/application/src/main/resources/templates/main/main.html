@@ -1,5 +1,4 @@
-<th:block th:insert="~{modules/header.html}" />
-
+<th:block th:insert="~{modules/header}" />
 <div class="wrapper">
 
     <!-- Navbar -->
@@ -86,7 +85,7 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img th:src="@{/bootstrap/dist/img/user3-128x128.jpg}" alt="User Avatar"
+                            <img th:src="@{bootstrap/dist/img/user3-128x128.jpg}" alt="User Avatar"
                                 class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
@@ -158,8 +157,7 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img th:src="@{bootstrap/dist/img/user2-160x160.jpg}" class="img-circle elevation-2"
-                        alt="User Image">
+                    <img th:src="@{member/getPicture?id=mimi}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
                     <a href="#" class="d-block">Alexander Pierce</a>
@@ -185,53 +183,20 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                    <li class="nav-item menu-close">
-                        <a href="#" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <li class="nav-item" th:each="mainMenu : ${menuList}" th:id="${mainMenu.mcode}">
+                        <a th:href="|javascript:goPage('${mainMenu.murl}','${mainMenu.mcode}');|" class="nav-link">
+                            <i th:class="|nav-icon ${mainMenu.micon}|"></i>
                             <p>
-                                Starter Pages
-                                <i class="right fas fa-angle-left"></i>
+                                [[${mainMenu.mname}]]
+                                <i class="right fas fa-angle-left" th:if="${mainMenu.mcode ne 'M000000'}"></i>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link ">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Active Page</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item menu-close">
-                        <a href="#" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Starter Pages
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link ">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Active Page</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item menu-close">
-                        <a href="#" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Starter Pages
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link ">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Active Page</p>
+                        <ul class="nav nav-treeview" th:if="${mainMenu.mcode ne 'M000000'}">
+                            <li class="nav-item" th:each="subMenu : ${mainMenu.subMenuList}" th:id="${subMenu.mcode}">
+                                <a th:href="|javascript:goPage('${subMenu.murl}','${subMenu.mcode}');|"
+                                    class="nav-link">
+                                    <i th:class="${subMenu.micon}"></i>
+                                    <p th:text="${subMenu.mname}"></p>
                                 </a>
                             </li>
                         </ul>
@@ -249,23 +214,56 @@
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
-                <iframe name="ifm" th:src="@{member/list}" frameborder="0" style="width: 100%; height: 85vh;"></iframe>
+
+                <iframe name="ifr" src="" frameborder="0" style="width:100%;height:85vh;"></iframe>
+
 
             </div>
         </div>
     </div>
 
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Anything you want
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+
 </div>
 
-<!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
-    </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
-
 <th:block th:insert="~{modules/common_js}" />
+
+<script>
+
+    function goPage(url, mcode) {
+        //    /alert(url+" : "+mcode);
+        $('iframe[name="ifr"]').attr("src", '[[@{/}]]' + url);
+
+        var renewURL = location.href;
+        //현재 주소 중  뒤 부분이 있다면 날려버린다.
+        renewURL = renewURL.substring(0, renewURL.indexOf(".") + 5);
+
+        if (mcode != 'M000000') {
+            renewURL += "?mcode=" + mcode;
+        }
+        //페이지를 리로드하지 않고 페이지 주소만 변경할 때 사용
+        history.pushState(mcode, null, renewURL);
+    }
+
+    goPage('[[${menu.murl}]]','[[${menu.mcode}]]');
+</script>
+
 <th:block th:insert="~{modules/footer}" />

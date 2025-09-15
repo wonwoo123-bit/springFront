@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.application.command.PageMaker;
 import com.spring.application.dao.MemberDAO;
 import com.spring.application.dto.MemberVO;
+import com.spring.application.exeption.InvalidPasswordException;
+import com.spring.application.exeption.NotFoundIDException;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -53,6 +55,13 @@ public class MemberServiceImpl implements MemberService{
         memberDAO.deleteMember(id);
         
     }
+
+    @Override
+    public void login(String id, String pwd) throws SQLException, NotFoundIDException, InvalidPasswordException {
+        // TODO Auto-generated method stub
+        
+    }
+    
     
 
 }
