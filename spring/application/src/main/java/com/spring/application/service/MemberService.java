@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.spring.application.command.PageMaker;
 import com.spring.application.dto.MemberVO;
+import com.spring.application.exeption.InvalidPasswordException;
+import com.spring.application.exeption.NotFoundIDException;
 
 
 public interface MemberService {
@@ -20,5 +22,7 @@ public interface MemberService {
     void regist(MemberVO member) throws SQLException;
     //회원 삭제
     void remove(String id) throws SQLException;
+    //login
+    void login(String id, String pwd)throws SQLException,NotFoundIDException,InvalidPasswordException;
 
 }
