@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.application.command.MemberRegistCommand;
+import com.spring.application.command.MemberModifyCommand;
 import com.spring.application.command.PageMaker;
 import com.spring.application.dto.MemberVO;
 import com.spring.application.service.MemberService;
@@ -75,24 +76,29 @@ public record MemberController(MemberService memberService , @Value("${member.pi
         return url;
     }
     public String savePicture(String oldPicture, MultipartFile multi)throws Exception{
+
+        String uploadPath = this.picturePath;
+
+        if(oldPicture != null && !oldPicture.isEmpty()){
+        File oldFile = new File(uploadPath,oldPicture);
+        if(oldFile.exists()){
+            oldFile.delete();
+            }
+        }
+
+        if (multi==null || multi.getSize() == 0) {
+            return null;
+        }
+        
         //저장 파일명
         String fileName = null;
 
         String uuid = UUID.randomUUID().toString().replace("-", "")+".jpg";
         fileName = uuid + "$$" + multi.getOriginalFilename();
 
-        String uploadPath = this.picturePath;
-
         File storeFile = new File(uploadPath, fileName);
         storeFile.mkdirs();
         multi.transferTo(storeFile);
-
-        if(oldPicture != null && !oldPicture.isEmpty()){
-            File oldFile = new File(uploadPath,oldPicture);
-            if(oldFile.exists()){
-                oldFile.delete();
-            }
-        }
 
         return fileName;
     }
@@ -137,6 +143,45 @@ public record MemberController(MemberService memberService , @Value("${member.pi
 
         mnv.addObject("member", member);
         mnv.setViewName(url);
+        return mnv;
+    }
+
+    @PostMapping(value = "/modify", produces = "text/plain;charset=utf-8")
+    public ModelAndView modify(MemberModifyCommand modifyCommand, ModelAndView mnv) throws Exception{
+        String url = "/member/modify_success";
+
+        MemberVO member = modifyCommand.toMemberVO();
+        String oldPicture = modifyCommand.getOldPirture();
+        MultipartFile multi = modifyCommand.getPicture();
+
+        if (multi != null && multi.getSize() > 0) {
+            member.setPicture(savePicture(oldPicture, multi));
+        }else{
+            member.setPicture(oldPicture);
+        }
+
+        memberService.modify(member);
+
+        mnv.addObject("id", member.getId());
+        mnv.setViewName(url);
+
+
+        return mnv;
+    }
+    @GetMapping("/remove")
+    public ModelAndView remove(String id, ModelAndView mnv) throws Exception{
+        String url = "/member/remove_success";
+        MemberVO member = memberService.getMember(id);
+        String savePath = this.picturePath;
+        File imgFile = new File(savePath,member.getPicture());
+        if (imgFile.exists()) {
+            imgFile.delete();
+            
+        }
+        memberService.remove(id);
+
+        mnv.setViewName(url);
+
         return mnv;
     }
 

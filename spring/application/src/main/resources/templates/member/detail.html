@@ -121,12 +121,12 @@
             <div class="card-footer" style="padding:5px 0;">
                 <div class="row">
                     <div class="col-sm-4 text-center">
-                        <button type="button" th:ondlick="|location.href='@{modifyForm(id=${member.id})}'|" id="modifyBtn" class="btn btn-warning ">
+                        <button type="button" th:onclick="|location.href='@{modifyForm(id=${member.id})}'|" id="modifyBtn" class="btn btn-warning ">
                             수 정</button>
                     </div>
 
                     <div class="col-sm-4 text-center">
-                        <button type="button" id="deleteBtn" class="btn btn-danger">삭 제</button>
+                        <button type="button" id="deleteBtn"  onclick="remove_go()"; class="btn btn-danger">삭 제</button>
                     </div>
 
                     <div class="col-sm-4 text-center">
@@ -145,6 +145,13 @@
 <th:block th:insert="~{modules/common_js}" />
 <script>
     MemberPictureThumb('[[@{/}]]');
+</script>
+<script>
+    function remove_go(){
+       if(confirm("[[${member.id}]] 님을 정말 삭제하시겠습니까?")){
+            location.href='[[@{remove(id=${member.id})}]]';
+        };
+    }
 </script>
 
 <th:block th:insert="~{modules/footer}" />

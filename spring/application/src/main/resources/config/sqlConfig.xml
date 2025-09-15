@@ -8,5 +8,6 @@
 
         <typeAlias type="com.spring.application.dto.NoticeVO" alias="notice" />
         <typeAlias type="com.spring.application.dto.MemberVO" alias="member" />
+        <typeAlias type="com.spring.application.dto.MenuVO" alias="menu" />
     </typeAliases>
   </configuration>
