@@ -49,4 +49,7 @@
   </div>    
 
 <th:block th:insert="~{modules/common_js}" />
+<script th:if="${msg != null}">
+	alert("[[${msg}]]");
+</script>
 <th:block th:insert="~{modules/footer}" />

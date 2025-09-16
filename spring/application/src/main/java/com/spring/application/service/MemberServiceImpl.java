@@ -57,9 +57,13 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void login(String id, String pwd) throws SQLException, NotFoundIDException, InvalidPasswordException {
-        // TODO Auto-generated method stub
-        
+    public MemberVO login(String id, String pwd) throws SQLException, NotFoundIDException, InvalidPasswordException {
+        MemberVO member = memberDAO.selectMemberById(id);
+
+        if(member== null)throw new NotFoundIDException();
+        if (!member.getPwd().equals(pwd))throw new InvalidPasswordException(); 
+                        
+        return member;
     }
     
     

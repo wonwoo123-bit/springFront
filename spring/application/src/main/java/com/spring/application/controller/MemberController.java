@@ -29,6 +29,8 @@ import com.spring.application.command.PageMaker;
 import com.spring.application.dto.MemberVO;
 import com.spring.application.service.MemberService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/member")
 public record MemberController(MemberService memberService , @Value("${member.picture}" )String picturePath) {
@@ -60,16 +62,17 @@ public record MemberController(MemberService memberService , @Value("${member.pi
     }
 
     @PostMapping(value = "/regist", produces = "text/plain;charset=utf-8")
-    public String regist(MemberRegistCommand regCommand) throws Exception{
+    public String regist(MemberRegistCommand regCommand, HttpSession session) throws Exception{
         String url = "/member/regist_success";
         //파일저장 :함수만들어서 > savePicture()
         MultipartFile multi = regCommand.getPicture();
         String fileName = savePicture(null,multi);
         
         //DB저장
+        MemberVO loginUser = (MemberVO)session.getAttribute("loginUser");
         MemberVO member = regCommand.toMemberVO();
         member.setPicture(fileName);
-        member.setRegister("mimi");
+        member.setRegister(loginUser.getId());
 
         memberService.regist(member);
 

@@ -23,6 +23,6 @@ public interface MemberService {
     //회원 삭제
     void remove(String id) throws SQLException;
     //login
-    void login(String id, String pwd)throws SQLException,NotFoundIDException,InvalidPasswordException;
+    MemberVO login(String id, String pwd)throws SQLException,NotFoundIDException,InvalidPasswordException;
 
 }

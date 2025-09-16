@@ -48,7 +48,8 @@
                         </div>
                         <div class="form-group">
                             <label for="writer">작성자</label>
-                            <input type="text" id="writer" title="작성자" name="writer" class="form-control notNull">
+                            <input type="text" id="writer" title="작성자" name="writer" readonly 
+                            th:value="${session.loginUser.id}" class="form-control notNull">
                         </div>
                         <div class="form-group">
                             <label for="content">내 용</label>

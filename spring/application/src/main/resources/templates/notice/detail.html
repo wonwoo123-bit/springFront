@@ -32,10 +32,12 @@
                 <div class="card-header">
                     <h3 class="card-title">상세보기</h3>
                     <div class="card-tools">
-                        <button type="button" id="modifyBtn" class="btn btn-warning"
-                            onclick="submit_go('modify');">MODIFY</button>
-                        <button type="button" id="removeBtn" class="btn btn-danger"
-                            onclick="submit_go('remove');">REMOVE</button>
+                        <th:block th:if="${notice.writer} eq ${session.loginUser.id}">
+                            <button type="button" id="modifyBtn" class="btn btn-warning"
+                                onclick="submit_go('modify');">MODIFY</button>
+                            <button type="button" id="removeBtn" class="btn btn-danger"
+                                onclick="submit_go('remove');">REMOVE</button>
+                        </th:block>
                         <button type="button" id="listBtn" class="btn btn-primary"
                             onclick="CloseWindow();">CLOSE</button>
                     </div>

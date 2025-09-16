@@ -156,11 +156,20 @@
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img th:src="@{member/getPicture?id=mimi}" class="img-circle elevation-2" alt="User Image">
+                <div class="image col-sm-2">
+                    <img th:src="@{member/getPicture(id=${session.loginUser.id})}" class="img-circle elevation-2"
+                        alt="User Image">
                 </div>
-                <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                <div class="info col-sm-10">
+                    <div class="d-flex">
+                        <a th:href="|javascript:OpenWindow('@{/member/detail(id=${session.loginUser.id})}','내정보',700,800)|"
+                            class="d-block col-sm-8" th:text="${session.loginUser.name}"></a>
+                        <button  th:onclick="|location.href='@{/common/logout}';|"
+                        class="d-block col-sm-4 btn btn-xs btn-primary">LOGOUT</button>
+                    </div>
+                    <a class="d-block com-sm-10" th:href="|mailTo:${session.loginUser.email}|"
+                                                    th:text="|email : ${session.loginUser.email}|"
+                                                    style="margin-left: 7px;"></a>
                 </div>
             </div>
 
@@ -249,21 +258,33 @@
 <script>
 
     function goPage(url, mcode) {
-        //    /alert(url+" : "+mcode);
-        $('iframe[name="ifr"]').attr("src", '[[@{/}]]' + url);
+        // iframe 요소가 있는지 먼저 확인
+        const $iframe = $('iframe[name="ifr"]');
+        if ($iframe.length === 0) {
+            console.error("iframe[name='ifr'] 요소를 찾을 수 없습니다.");
+            return;
+        }
+
+        if (!url) {
+            console.error("url 값이 없습니다.");
+            return;
+        }
+
+        $iframe.attr("src", '[[@{/}]]' + url);
 
         var renewURL = location.href;
-        //현재 주소 중  뒤 부분이 있다면 날려버린다.
-        renewURL = renewURL.substring(0, renewURL.indexOf(".") + 5);
+        if (renewURL.indexOf(".") > -1) {
+            renewURL = renewURL.substring(0, renewURL.indexOf(".") + 5);
+        }
 
-        if (mcode != 'M000000') {
+        if (mcode && mcode !== 'M000000') {
             renewURL += "?mcode=" + mcode;
         }
-        //페이지를 리로드하지 않고 페이지 주소만 변경할 때 사용
+
         history.pushState(mcode, null, renewURL);
     }
 
-    goPage('[[${menu.murl}]]','[[${menu.mcode}]]');
+    goPage('[[${menu.murl}]]', '[[${menu.mcode}]]');
 </script>
 
 <th:block th:insert="~{modules/footer}" />

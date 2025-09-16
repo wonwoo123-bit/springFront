@@ -1,3 +1,6 @@
-<script>
+<script th:if="${session.loginUser} == null">
     location.href="[[@{common/loginForm}]]";
+</script>
+<script th:if="${session.loginUser} != null">
+    location.href="[[@{index.html}]]";
 </script>

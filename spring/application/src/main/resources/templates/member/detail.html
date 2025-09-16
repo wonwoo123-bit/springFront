@@ -79,19 +79,19 @@
                         <div class="row">
                             <div class="custom-control custom-radio mr-3">
                                 <input name="authorities" type="radio" class="custom-control-input" id="ROLE_USER"
-                                th:checked="${member.authorities == 'ROLE_USER'}" disabled>
+                                    th:checked="${member.authorities == 'ROLE_USER'}" disabled>
                                 <label for="ROLE_USER" class="custom-control-label">사용자</label>
                             </div>
 
                             <div class="custom-control custom-radio mr-3">
                                 <input name="authorities" type="radio" class="custom-control-input" id="ROLE_MANAGER"
-                                th:checked="${member.authorities == 'ROLE_MANAGER'}" disabled>
+                                    th:checked="${member.authorities == 'ROLE_MANAGER'}" disabled>
                                 <label for="ROLE_MANAGER" class="custom-control-label">운영자</label>
                             </div>
 
                             <div class="custom-control custom-radio">
                                 <input name="authorities" type="radio" class="custom-control-input" id="ROLE_ADMIN"
-                                th:checked="${member.authorities == 'ROLE_ADMIN'}" disabled>
+                                    th:checked="${member.authorities == 'ROLE_ADMIN'}" disabled>
                                 <label for="ROLE_ADMIN" class="custom-control-label">관리자</label>
                             </div>
                         </div>
@@ -120,15 +120,18 @@
             </div>
             <div class="card-footer" style="padding:5px 0;">
                 <div class="row">
-                    <div class="col-sm-4 text-center">
-                        <button type="button" th:onclick="|location.href='@{modifyForm(id=${member.id})}'|" id="modifyBtn" class="btn btn-warning ">
-                            수 정</button>
-                    </div>
+                    <th:block th:if="${member.register eq session.loginUser.id OR member.id eq session.loginUser.id}">
+                        <div class="col-sm-4 text-center">
+                            <button type="button" th:onclick="|location.href='@{modifyForm(id=${member.id})}'|"
+                                id="modifyBtn" class="btn btn-warning ">
+                                수 정</button>
+                        </div>
 
-                    <div class="col-sm-4 text-center">
-                        <button type="button" id="deleteBtn"  onclick="remove_go()"; class="btn btn-danger">삭 제</button>
-                    </div>
-
+                        <div class="col-sm-4 text-center">
+                            <button type="button" id="deleteBtn" onclick="remove_go()" ; class="btn btn-danger">삭
+                                제</button>
+                        </div>
+                    </th:block>
                     <div class="col-sm-4 text-center">
                         <button type="button" id="listBtn" onclick="CloseWindow();" class="btn btn-primary pull-right">닫
                             기</button>
@@ -147,9 +150,9 @@
     MemberPictureThumb('[[@{/}]]');
 </script>
 <script>
-    function remove_go(){
-       if(confirm("[[${member.id}]] 님을 정말 삭제하시겠습니까?")){
-            location.href='[[@{remove(id=${member.id})}]]';
+    function remove_go() {
+        if (confirm("[[${member.id}]] 님을 정말 삭제하시겠습니까?")) {
+            location.href = '[[@{remove(id=${member.id})}]]';
         };
     }
 </script>
