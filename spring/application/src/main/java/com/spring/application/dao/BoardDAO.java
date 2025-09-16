@@ -9,18 +9,19 @@ import com.spring.application.dto.BoardVO;
 public interface BoardDAO {
     List<BoardVO> selectSearchBoardVOList(PageMaker pageMaker) throws SQLException;
 
-    int selectSearchBoardVOListCount(PageMaker pageMaker) throws SQLException;
+    int selectSearchBoardListCount(PageMaker pageMaker) throws SQLException;
 
-    BoardVO selectBoardVOByBno(int bno) throws SQLException;
+    BoardVO selectBoardByBno(int bno) throws SQLException;
+
+    void insertBoard (BoardVO board) throws SQLException;
+
+    void updateBoard (BoardVO board) throws SQLException;
+
+    void deleteBoard (int bno) throws SQLException;
 
     void increaseViewCount (int bno) throws SQLException;
 
-    int selectBoardVOSequenceNextValue () throws SQLException;
+    int selectBoardSeqNext () throws SQLException;
 
-    void insertBoardVO (BoardVO BoardVO) throws SQLException;
-
-    void updateBoardVO (BoardVO BoardVO) throws SQLException;
-
-    void deleteBoardVO (int bno) throws SQLException;
 
 }

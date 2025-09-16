@@ -34,12 +34,12 @@ public record NoticeController(NoticeService noticeService) {
 
         return url;
     }
-    @GetMapping("/registForm")
+    @GetMapping("/registForm") //화면 불러오기용(저장 할 값 받을때 사용임)
     public String registForm()throws Exception{
         String url="/notice/regist";
         return url;
     }
-    @PostMapping("/regist")
+    @PostMapping("/regist") // db에 저장할 값 받는용
     public String regist(NoticeRegistCommand command) throws Exception{
         String url = "/notice/regist_success";
 
