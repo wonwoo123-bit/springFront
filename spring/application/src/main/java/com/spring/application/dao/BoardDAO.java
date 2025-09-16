@@ -7,7 +7,7 @@ import com.spring.application.command.PageMaker;
 import com.spring.application.dto.BoardVO;
 
 public interface BoardDAO {
-    List<BoardVO> selectSearchBoardVOList(PageMaker pageMaker) throws SQLException;
+    List<BoardVO> selectSearchBoardList(PageMaker pageMaker) throws SQLException;
 
     int selectSearchBoardListCount(PageMaker pageMaker) throws SQLException;
 

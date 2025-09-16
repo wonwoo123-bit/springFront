@@ -54,7 +54,7 @@ public class BoardDAOImpl implements BoardDAO {
     }
 
     @Override
-    public List<BoardVO> selectSearchBoardVOList(PageMaker pageMaker) throws SQLException {
+    public List<BoardVO> selectSearchBoardList(PageMaker pageMaker) throws SQLException {
         int startRow = pageMaker.getStartRow();
         int endRow = startRow + pageMaker.getPerPageNum();
 
@@ -64,7 +64,7 @@ public class BoardDAOImpl implements BoardDAO {
         dataParam.put("searchType", pageMaker.getSearchType());
         dataParam.put("keyword", pageMaker.getKeyword());
 
-        List<BoardVO> boardList = sqlSession.selectList("Board-Mapper.selectSearchBoardVOList",dataParam);
+        List<BoardVO> boardList = sqlSession.selectList("Board-Mapper.selectSearchBoardList",dataParam);
         return boardList;
     }
 

@@ -1,6 +1,5 @@
 package com.spring.application.controller;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -14,30 +13,42 @@ import com.spring.application.dto.BoardVO;
 import com.spring.application.service.BoardService;
 
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
+
 
 @Controller
 @RequestMapping("/board")
 public record BoardController(BoardService boardService){
 
     @GetMapping("/main")
+    public void main(){}
+
+    @GetMapping("/list")
     public String list(@ModelAttribute(name = "pageMaker") PageMaker pageMaker, Model model) throws Exception{
-        String url = "/board/main";
+        String url = "/board/list";
             
-        List<BoardVO> boardList = boardService.list(pageMaker);
+        model.addAttribute("boardList", boardService.list(pageMaker));
         
-        model.addAttribute("boardList", boardList);
-
-
         return url;
     }
 
-    @GetMapping("/read")
+    @GetMapping("/detail")
     public String detail(int bno, Model model, HttpServletRequest request) throws Exception{
-        String url = "board/read";
+        String url = "board/detail";
         ServletContext application = request.getServletContext();
         String key = "board:"+bno;
+
+        Object value = application.getAttribute(key);
+
+        BoardVO board = null;
+        if (value != null) {
+            board = boardService.getBoard(bno);
+            
+        }else{
+            board = boardService.detail(bno);
+            application.setAttribute(key, "");
+        }
+        model.addAttribute("board", board);
 
 
         return url;

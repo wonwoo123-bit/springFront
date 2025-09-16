@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<BoardVO> list(PageMaker pageMaker) throws SQLException {
-        List<BoardVO> boardList = boardDAO.selectSearchBoardVOList(pageMaker);
+        List<BoardVO> boardList = boardDAO.selectSearchBoardList(pageMaker);
 
         //reply 개수 세팅
         
