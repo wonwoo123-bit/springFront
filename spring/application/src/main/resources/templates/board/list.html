@@ -27,7 +27,7 @@
 <section class="content">
     <div class="card">
         <div class="card-header with-border">
-            <button type="button" class="btn btn-primary" id="registBtn" onclick="">게시글등록</button>
+            <button type="button" class="btn btn-primary" id="registBtn" onclick="OpenWindow('registForm','글등록',700,800)">게시글등록</button>
             <div id="keyword" class="card-tools" style="width:450px;">
                 <div class="input-group row">
                     <select class="form-control col-md-3" name="perPageNum" id="perPageNum"
@@ -71,23 +71,38 @@
                 </thead>
                 <tbody>
                     <th:block th:each="board : ${boardList}">
-                        <tr style="font-size: 0.85em;cursor: pointer;"
-                            th:onclick="|OpenWindow('detail?bno=${board.bno}','상세보기',700,800);|">
+                        <tr th:if="${boardList.size() <= 0}">
+                            <td colspan="5">
+                                <strong>해당 내용이 없습니다.</strong>
+                            </td>
+                        </tr>
+                        <tr style="font-size: 0.85em;cursor: pointer;">
                             <td th:text="${board.bno}"></td>
-                            <td th:text="${board.title}"></td>
+                            <td>
+                                <a th:href="|javascript:OpenWindow('@{detail(bno=${board.bno })}','상세보기',700,800);|">
+                                <span class="d-block col-sm-12" 
+                                      style="text-align:left;overflow: hidden; 
+                                            white-space: nowrap; text-overflow: ellipsis;">[(${board.title})]
+                                    <span>
+                                        <!-- 댓글 개수 -->
+                                    </span>
+                                </span>
+                            </a>
+                            </td>
                             <td th:text="${board.writer}"></td>
                             <td th:text="${#dates.format(board.regDate, 'yyyy-MM-dd')}"></td>
-                            <td th:text="${board.viewcnt}"></td>
+                            <td><span class="badge bg-red" th:text="${board.viewcnt}"></span></td>
                         </tr>
                     </th:block>
                 </tbody>
             </table>
         </div>
         <div class="card-footer">
-
+            <th:block th:insert="~{modules/pagination.html}" />
         </div>
     </div>
 
 </section>
 <th:block th:insert="~{modules/common_js}" />
+
 <th:block th:insert="~{modules/footer}" />

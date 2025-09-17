@@ -31,7 +31,7 @@
     <select id="selectBoardByBno" parameterType="int" resultType="board"> select * from board
         where bno=#{bno} </select>
 
-    <select id="selectBoardSequenceNextValue" resultType="int"> select board_seq.nextVal from dual </select>
+    <select id="selectBoardSeqNext" resultType="int"> select board_seq.nextVal from dual </select>
 
     <update id="increaseViewCount" parameterType="int"> update board set viewcnt=viewcnt+1 where
         bno=#{bno} </update>

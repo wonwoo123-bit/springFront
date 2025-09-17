@@ -1,13 +1,9 @@
 package com.spring.application.filter;
 
 import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.springframework.stereotype.Component;
-import org.springframework.util.PatternMatchUtils;
 
 import com.spring.application.dto.MemberVO;
 

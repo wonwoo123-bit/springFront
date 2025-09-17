@@ -12,7 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 public class BoardVO {
     private int bno;
     private String title;
