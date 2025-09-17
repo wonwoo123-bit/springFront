@@ -1,0 +1,65 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+
+<script type="text/x-handlebars-template" id="reply-list-template">
+{{#each .}}  
+<div class="replyLi" >
+   <div class="user-block">
+      <img src="/member/getPicture?id={{replyer}}" class="img-circle img-bordered-sm"/>
+    </div>   
+   <div class="timeline-item" >
+        <span class="time">
+          <i class="fa fa-clock"></i>{{regdate}}
+          <a class="btn btn-primary btn-xs {{rno}}-a" id="modifyReplyBtn" data-rno={{rno}} onclick="replyModifyModal_go('{{rno}}');"            
+            style="display:{{replyer}};"
+             data-replyer={{replyer}} data-toggle="modal" data-target="#modifyModal">Modify</a>
+        </span>
+   
+        <h3 class="timeline-header"><strong style="display:none;">{{rno}}</strong>{{replyer}}</h3>
+        <div class="timeline-body" id="{{rno}}-replytext">{{replytext}} </div>
+   </div>
+</div>
+
+{{/each}}
+</script>
+
+<script type="text/x-handlebars-template" id="reply-pagination-template">
+  <li class="page-item">
+            <a class="page-link" href="{{goPage 1}}">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+        </li>
+</script>
+
+<script>
+  Handlebars.registerhelper({
+    "goPage":function(pageNum){
+      return 'javascript:getPage("[[@{/reply/list(bno-${board.bno})}]]&page='+pageNum+'",'+pageNum+');';
+    }
+  })
+</script>
+
+
+<script>
+  var reply_list_func = Handlebars.compile($("#reply-list-template").html());
+  
+  var currentPage = 1;
+
+  getPage('[[@{/reply/list(bno=${board.bno})}]]&page='+currentPage,currentPage);
+
+  function getPage(pageInfo, page) {
+
+    $.ajax({
+      url: pageInfo,
+      method: "get",
+      success: function (data) {
+        // console.log(data);
+        let reply_list_html = reply_list_func(data.replyList);
+        $('#repliesDiv').after(reply_list_html);
+      },
+      error: function (error) {
+        alert("서버장애로 인해 댓글을 표시할 수 없습니다.");
+      }
+    });
+
+  }
+</script>

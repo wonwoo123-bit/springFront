@@ -15,8 +15,8 @@ public interface MemberService {
     //회원목록
     List<MemberVO> list(PageMaker pageMaker) throws SQLException;
     //회원상세
-    //회원수정
     MemberVO getMember(String id) throws SQLException;
+    //회원수정
     void modify(MemberVO member) throws SQLException;
     //회원 등록
     void regist(MemberVO member) throws SQLException;

@@ -10,5 +10,6 @@
         <typeAlias type="com.spring.application.dto.MemberVO" alias="member" />
         <typeAlias type="com.spring.application.dto.MenuVO" alias="menu" />
         <typeAlias type="com.spring.application.dto.BoardVO" alias="board" />
+        <typeAlias type="com.spring.application.dto.ReplyVO" alias="reply" />
     </typeAliases>
   </configuration>

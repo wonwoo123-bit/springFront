@@ -138,13 +138,13 @@
     </div>
 </div>
 <form role="form">
-    <input type="hidden" name="bno" th:value="${board.bno}"/>
+    <input type="hidden" name="bno" th:value="${board.bno}" />
 </form>
 <th:block th:insert="~{modules/common_js.html}" />
 
 <script>
     var formObj = document.querySelector("form[role='form']");
-    function submit_go(url) { 
+    function submit_go(url) {
 
         if (url == "remove" && !confirm("정말로 삭제하시겠습니까?")) {
             return;
@@ -153,5 +153,5 @@
         formObj.submit();
     }
 </script>
-<th:block th:insert="~{reply_js.html}"
+<th:block th:insert="~{board/reply_js.html}" />
 <th:block th:insert="~{modules/footer.html}" />

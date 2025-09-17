@@ -9,12 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.application.command.PageMaker;
 import com.spring.application.dao.BoardDAO;
+import com.spring.application.dao.ReplyDAO;
 import com.spring.application.dto.BoardVO;
 
 @Service
 public class BoardServiceImpl implements BoardService{
     @Autowired
     private BoardDAO boardDAO;
+    @Autowired
+    private ReplyDAO replyDAO;
 
     @Override
     public BoardVO detail(int bno) throws SQLException {
@@ -34,6 +37,10 @@ public class BoardServiceImpl implements BoardService{
         List<BoardVO> boardList = boardDAO.selectSearchBoardList(pageMaker);
 
         //reply 개수 세팅
+        for(BoardVO board : boardList){
+            int replycnt = replyDAO.countReply(board.getBno());
+            board.setReplycnt(replycnt);
+        }
         
         //pageMaker세팅(화면 출력 나올때 사용하는 용도)
         int totalCount = boardDAO.selectSearchBoardListCount(pageMaker);

@@ -80,11 +80,13 @@
                             <td th:text="${board.bno}"></td>
                             <td>
                                 <a th:href="|javascript:OpenWindow('@{detail(bno=${board.bno })}','상세보기',700,800);|">
-                                <span class="d-block col-sm-12" 
+                                <span class="col-sm-12" 
                                       style="text-align:left;overflow: hidden; 
                                             white-space: nowrap; text-overflow: ellipsis;">[(${board.title})]
-                                    <span>
-                                        <!-- 댓글 개수 -->
+                                    <span class="nav-item" th:if="${board.replycnt} > 0">
+                                        &nbsp;&nbsp;<i class="fa fa-commnet"></i>
+                                        <span class="badge badge-waring navbar-badge" th:text="${board.replycnt}"></span>
+                                        
                                     </span>
                                 </span>
                             </a>
