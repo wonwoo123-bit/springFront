@@ -9,9 +9,10 @@
    <div class="timeline-item" >
         <span class="time">
           <i class="fa fa-clock"></i>{{regdate}}
-          <a class="btn btn-primary btn-xs {{rno}}-a" id="modifyReplyBtn" data-rno={{rno}} onclick="replyModifyModal_go('{{rno}}');"            
-            style="display:{{replyer}};"
-             data-replyer={{replyer}} data-toggle="modal" data-target="#modifyModal">Modify</a>
+          {{#visibleByLoginCheck '[[${session.loginUser.id}]]' replyer}}
+            <a class="btn btn-primary btn-xs {{rno}}-a" id="modifyReplyBtn" data-rno={{rno}} onclick="replyModifyModal_go('{{rno}}');"            
+               data-replyer={{replyer}} data-toggle="modal" data-target="#modifyModal">Modify</a>
+          {{/visibleByLoginCheck}}
         </span>
    
         <h3 class="timeline-header"><strong style="display:none;">{{rno}}</strong>{{replyer}}</h3>
@@ -23,43 +24,191 @@
 </script>
 
 <script type="text/x-handlebars-template" id="reply-pagination-template">
-  <li class="page-item">
-            <a class="page-link" href="{{goPage 1}}">
-                <i class="fas fa-angle-double-left"></i>
-            </a>
-        </li>
+   <li class="page-item">
+      <a class="page-link" href="{{goPage 1}}">
+         <i class="fas fa-angle-double-left"></i>
+      </a>
+   </li>  <li class="page-item">
+      <a class="page-link" href="{{#if prev}}{{goPage prevPageNum}}{{else}}{{goPage 1}}{{/if}}">
+         <i class="fas fa-angle-left"></i>
+      </a>                  
+   </li>
+   {{#each pageNum}} 
+      <li class="paginate_button page-item {{signActive this}} ">
+         <a href="{{goPage this}}" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">{{this}}</a>
+      </li>
+   {{/each}}
+    <li class="page-item">
+      <a class="page-link" href="{{#if next}}{{goPage nextPageNum}}{{else}}{{goPage realEndPage}}{{/if}}">
+         <i class="fas fa-angle-right"></i>
+      </a>                  
+   </li>
+   <li class="page-item">
+      <a class="page-link" href="{{goPage realEndPage}}">
+         <i class="fas fa-angle-double-right"></i>
+      </a>
+   </li>
 </script>
-
 <script>
-  Handlebars.registerhelper({
-    "goPage":function(pageNum){
-      return 'javascript:getPage("[[@{/reply/list(bno-${board.bno})}]]&page='+pageNum+'",'+pageNum+');';
+  Handlebars.registerHelper({
+    "goPage": function (pageNum) {
+      return 'javascript:getPage("[[@{/reply/list(bno=${board.bno})}]]&page=' + pageNum + '",' + pageNum + ');';
+    },
+    "signActive": function (pageNum) {
+      if (pageNum == currentPage) return 'active';
+    },
+    "visibleByLoginCheck": function (loginUser, replyer, options) {
+      return (loginUser == replyer) ? options.fn(this) : options.inverse(this);
     }
-  })
+  });
 </script>
 
 
 <script>
   var reply_list_func = Handlebars.compile($("#reply-list-template").html());
-  
+  var pagination_func = Handlebars.compile($("#reply-pagination-template").html());
+
+
   var currentPage = 1;
 
-  getPage('[[@{/reply/list(bno=${board.bno})}]]&page='+currentPage,currentPage);
+  getPage('[[@{/reply/list(bno=${board.bno})}]]&page=' + currentPage, currentPage);
 
   function getPage(pageInfo, page) {
+
 
     $.ajax({
       url: pageInfo,
       method: "get",
       success: function (data) {
         // console.log(data);
+        $('.replyLi').remove();
+        
+        if (data.replyList.length < 1) return;
+
         let reply_list_html = reply_list_func(data.replyList);
         $('#repliesDiv').after(reply_list_html);
+
+        if (page) currentPage = page;
+        let pageMaker = data.pageMaker;
+
+        var pageNumArray = new Array(pageMaker.endPage - pageMaker.startPage + 1);
+        for (var i = pageMaker.startPage; i < pageMaker.endPage + 1; i++) {
+          pageNumArray[i - pageMaker.startPage] = i;
+        }
+
+        pageMaker.pageNum = pageNumArray;
+        pageMaker.prevPageNum = pageMaker.startPage - 1;
+        pageMaker.nextPageNum = pageMaker.endPage + 1;
+
+        var pagination_html = pagination_func(data.pageMaker);
+        $("#pagination").html(pagination_html);
       },
       error: function (error) {
         alert("서버장애로 인해 댓글을 표시할 수 없습니다.");
       }
     });
 
+  }
+</script>
+
+
+<script>
+  function replyRegist_go() {
+    var replytext = $('#newReplyText').val();
+    // alert(replytext);
+    if(!replytext){
+      alert("내용이 없습니다.");
+      $('#newReplyText').focus();
+      return;
+    }
+    var data = {
+      "bno": "[[${board.bno}]]",
+      "replyer": "[[${session.loginUser.id}]]",
+      "replytext": replytext
+    }
+
+    $.ajax({
+      url: "[[@{/reply/regist}]]",
+      method: "post",
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      success: function (pageNum) {
+        alert('댓글이 등록되었습니다.\n마지막페이지로 이동합니다.');
+        currentPage = pageNum; //페이지이동
+        getPage("[[@{/reply/list(bno=${board.bno})}]]&page=" + pageNum); //리스트 출력
+        $('#newReplyText').val("");
+      },
+      error: function (error) {
+        alert("서버장애로 인해 댓글 등록이 불가합니다.");
+      }
+    });
+
+  }
+</script>
+
+<script>
+  function replyModifyModal_go(rno) {
+    //alert(rno);
+    $('div#modifyModal div.modal-body #replytext').val($('div#' + rno + '-replytext').text());
+    $('div#modifyModal div.modal-header h4.modal-title').text(rno);
+  }
+
+  function replyModify_go() {
+    // alert("click modal reply modify");
+    var rno = $('div#modifyModal h4.modal-title').text();
+    var replytext = $('div#modifyModal #replytext').val();
+
+    var sendData = {
+      "rno": rno,
+      "replytext": replytext
+    }
+
+    // alert(JSON.stringify(sendData));
+    $.ajax({
+      url: "[[@{/reply/modify}]]",
+      method: "PATCH",
+      data: JSON.stringify(sendData),
+      contentType: "application/json",
+      headers: {
+        "X-HTTP-Method-Override": "PATCH"
+      },
+      success: function (result) {
+        alert("수정되었습니다.");
+        getPage("[[@{/}]]reply/list?bno=[[${board.bno}]]&page=" + currentPage);
+      },
+      error: function (error) {
+        alert("서버장애로 댓글 수정이 불가합니다.");
+      },
+      complete: function () {
+        $('#modifyModal').modal('hide');
+      }
+    });
+
+  }
+</script>
+
+<script>
+  function replyRemove_go(){
+    // alert("click modal remove btn");
+    var rno=$('h4.modal-title').text();
+
+      $.ajax({
+      url:"[[@{/}]]reply/remove?rno="+rno+"&page="+currentPage+"&bno=[[${board.bno}]]",
+      type:"delete",
+      headers: {
+        "X-HTTP-Method-Override": "DELETE"
+      },
+      success:function(page){
+         alert("삭제되었습니다.");
+         getPage("[[@{/reply/list(bno=${board.bno})}]]&page="+page);
+         currentPage=page;
+      },
+      error:function(error){
+         alert("서버장애로 인해 삭제가 불가합니다.");
+      },
+      complete:function(){
+         $('#modifyModal').modal('hide');
+      }
+   });
   }
 </script>
