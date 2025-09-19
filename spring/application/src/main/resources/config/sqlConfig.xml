@@ -11,6 +11,7 @@
         <typeAlias type="com.spring.application.dto.MenuVO" alias="menu" />
         <typeAlias type="com.spring.application.dto.BoardVO" alias="board" />
         <typeAlias type="com.spring.application.dto.ReplyVO" alias="reply" />
+        <typeAlias type="com.spring.application.dto.AttachVO" alias="attach" />
         <typeAlias type="com.spring.application.dto.PdsVO" alias="pds" />
     </typeAliases>
   </configuration>

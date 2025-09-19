@@ -1,10 +1,9 @@
 package com.spring.application.dao;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,7 +24,7 @@ public class PdsDAOImpl implements PdsDAO{
 
     @Override
     public void increaseViewCount(int pno) throws SQLException {
-        sqlSession.selectOne("Pds-Mapper.increaseViewCount",pno);
+        sqlSession.update("Pds-Mapper.increaseViewCount",pno);
         
     }
 
@@ -43,23 +42,17 @@ public class PdsDAOImpl implements PdsDAO{
 
     @Override
     public int selectPdsSeqNext() throws SQLException {
-        int pno = sqlSession.selectOne("Pds-Mapper.selectPdsSeqNext");
-        return pno;
+        int seq = sqlSession.selectOne("Pds-Mapper.selectPdsSeqNext");
+        return seq;
     }
 
     @Override
     public List<PdsVO> selectSearchPdsList(PageMaker pageMaker) throws SQLException {
         int startRow = pageMaker.getStartRow();
-        int endRow = startRow + pageMaker.getPerPageNum();
+        int endRow = pageMaker.getPerPageNum();
 
-        Map<String, Object> dataParam = new HashMap<String,Object>();
-        dataParam.put("startRow", startRow);
-        dataParam.put("endRow", endRow);
-        dataParam.put("searchType", pageMaker.getSearchType());
-        dataParam.put("keyword", pageMaker.getKeyword());
-
-        List<PdsVO> pdsList = sqlSession.selectList("Pds-Mapper.selectSearchPdsList",dataParam);
-        return pdsList;
+        RowBounds rows = new RowBounds(startRow, endRow);
+        return sqlSession.selectList("Pds-Mapper.selectSearchPdsList",pageMaker,rows);
     }
 
     @Override

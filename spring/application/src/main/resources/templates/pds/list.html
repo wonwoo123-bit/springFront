@@ -1,119 +1,104 @@
-<th:block th:insert="~{modules/header.html}" />
+<th:block th:insert="~{modules/header}"/>
 
-<style>
-  table#pdsTable th,
-  td {
-    text-align: center;
-  }
-</style>
-
-<div class="wrapper">
-
-  <!-- Content Wrapper. Contains page content -->
-  <div>
-    <!-- Main content -->
+<div class="wrapper"> 
+    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row md-2">
-          <div class="col-sm-6">
-            <h1>공지목록</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item">
-                <a href="list.do">
-                  <i class="fa fa-dashboard"></i>공지사항
-                </a>
-              </li>
-              <li class="breadcrumb-item active">
-                목록
-              </li>
-            </ol>
-          </div>
-        </div>
-      </div>
+    	<div class="container-fluid">
+    		<div class="row mb-2">
+    			<div class="col-sm-6">
+	      			<h1>자료실</h1>
+	      		</div>	      		
+	    	
+	       		
+	       		<div class="col-sm-6">
+			      <ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item"><a href="list"><i class="fa fa-dashboard"></i>자료실</a></li>
+			        <li class="breadcrumb-item active">리스트</li>		        
+			      </ol>
+		      	</div>
+	     	</div>	     	
+      	</div>
     </section>
 
+    <!-- Main content -->
     <section class="content">
-      <div class="card">
-        <div class="card-header with-border">
-          <button type="button" class="btn btn-primary" id="registBtn"
-            onclick="OpenWindow('registForm','자료등록',700,800)">자료등록</button>
+		<div class="card">
+			<div class="card-header with-border">
+				<button type="button" class="btn btn-primary" id="registBtn" onclick="OpenWindow('registForm','글등록',800,700);">자료등록</button>
+				<div id="keyword" class="card-tools" style="width:450px;">	
+					<div class="input-group row">
+						<select class="form-control col-md-3" name="perPageNum" id="perPageNum" th:field="${pageMaker.perPageNum}">
+					  		<option th:value="10" >정렬개수</option>
+					  		<option th:value="20" >20개씩</option>
+					  		<option th:value="30" >30개씩</option>
+					  		<option th:value="50" >50개씩</option>
+					  		
+					  	</select>		
+						<select class="form-control col-md-3" name="searchType" id="searchType" th:field="${pageMaker.searchType}">
+							<option th:value="tcw">전 체</option>
+							<option th:value="t" >제 목</option>
+							<option th:value="w" >작성자</option>
+							<option th:value="c" >내 용</option>
+							<option th:value="tc" >제목+내용</option>
+							<option th:value="cw" >작성자+내용</option>																			
+						</select>	
+										
+						<input  class="form-control" type="text" name="keyword" placeholder="검색어를 입력하세요." th:value="${pageMaker.keyword }"/>
+						<span class="input-group-append">
+							<button class="btn btn-primary" type="button" id="searchBtn" data-card-widget="search" onclick="search_list(1);">
+								<i class="fa fa-fw fa-search"></i>
+							</button>
+						</span>
+					</div>						
+				</div>			
+			</div>
+			<div class="card-body">
+				<table class="table table-bordered table-striped text-center" id="pdsList">
+                    <thead>
+                        <tr style="font-size:0.95em;">
+                            <th style="width:10%;">번 호</th>
+                            <th style="width:40%;">제 목</th>
+                            <th>첨부파일</th>
+                            <th style="width:15%;">작성자</th>
+                            <th>등록일</th>
+                            <th style="width:10%;">조회수</th>
+                        </tr>	
+                    </thead>
+                    <tbody>
+                        <tr th:if="${pdsList.size <= 0}">
+                            <td colspan="6" >해당내용이 없습니다.</td>
+                        </tr>
+                        
+                        <tr style='font-size:0.85em;' th:each="pds:${pdsList}">
+                            <td th:text="${pds.pno }"></td>
+                            <td id="boardTitle" style="text-align:left;max-width: 100px; overflow: hidden;
+                                            white-space: nowrap; text-overflow: ellipsis;">
+                                <a th:href="|javascript:OpenWindow(@{'detail(pno=${pds.pno },from=list)}','상세보기',800,700);|">
+                                    <span class="col-sm-12 " th:utext="${pds.title }"></span>
+                                </a>
+                            </td>
+                            <td>
+                                <!-- 첨부파일 -->
+                                <i th:if="${pds.attachList?.size() > 0 }" class="nav-icon fas fa-file"></i>
+                                <span th:if="${pds.attachList != null || pds.attachList?.size() == 0 }">-</span>
+                            </td>
+                            <td th:text="${pds.writer }"></td>
+                            <td th:text="${#dates.format(pds.regDate,'yyyy-MM-dd')}"></td>
+                            <td><span class="badge bg-red" th:text="${pds.viewcnt }"></span></td>
+                        </tr>
+                    </tbody>
+				</table>
+			</div>
+			<div class="card-footer">
+				<div th:if="${pdsList != null}">
+	    			<th:block th:insert="~{modules/pagination}" />
+	    		</div>
 
-
-          <div id="keyword" class="card-tools">
-            <div class="input-group row">
-              <select class="form-control col-md-3" name="perPageNum" id="perPageNum" th:field="*{pageMaker.perPageNum}"
-                onchange="search_list(1);">
-                <option th:value="10">정렬개수</option>
-                <option th:value="20">20개씩</option>
-                <option th:value="50">50개씩</option>
-                <option th:value="100">100개씩</option>
-              </select>
-
-              <select class="form-control col-md-4" name="searchType" id="searchType"
-                th:field="*{pageMaker.searchType}">
-                <option th:value="tcw">전 체</option>
-                <option th:value="t">제 목</option>
-                <option th:value="w">작성자</option>
-                <option th:value="c">내 용</option>
-                <option th:value="tc">제목+내용</option>
-                <option th:value="cw">작성자+내용</option>
-              </select>
-              <input class="form-control" type="text" name="keyword" placeholder="검색어를 입력하세요."
-                th:value="${pageMaker.keyword}" />
-              <span class="input-group-append">
-                <button class="btn btn-primary" type="button" onclick="search_list(1);" data-card-widget="search">
-                  <i class="fa fa-fw fa-search"></i>
-                </button>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <table class="table table-bordered table-striped" id="pdsTable">
-            <thead>
-              <tr style="font-size:0.95em;">
-                <th style="width:10%;">번 호</th>
-                <th style="width:40%;">제 목</th>
-                <th style="width:15%;">작성자</th>
-                <th>등록일</th>
-                <th>시작일</th>
-                <th>종료일</th>
-                <th style="width:10%;">조회수</th>
-              </tr>
-            </thead>
-            <tbody>
-              <th:block th:each="pds : ${pdsList}">
-                <tr style="font-size: 0.85em;cursor: pointer;"
-                  th:onclick="|OpenWindow('detail?pno=${pds.pno}','상세보기',700,800);|">
-                  <td th:text="${pds.pno}"></td>
-                  <td th:utext="${pds.title}"
-                    style="text-align: left;max-width: 100px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; ">
-                  </td>
-                  <td th:text="${pds.writer}"></td>
-                  <td th:text="${#dates.format(pds.regDate, 'yyyy-MM-dd')}"></td>
-                  <td th:text="${#dates.format(pds.startDate, 'yyyy-MM-dd')}"></td>
-                  <td th:text="${#dates.format(pds.endDate, 'yyyy-MM-dd')}"></td>
-                  <td th:text="${pds.viewcnt}"></td>
-                </tr>
-              </th:block>
-            </tbody>
-
-          </table>
-        </div>
-        <div class="card-footer">
-          <th:block th:insert="~{modules/pagination.html}" />
-        </div>
-      </div>
-    </section>
-  </div>
-  <!-- /.content-wrapper -->
-
-
+			</div>
+		</div>
+	</section>
 </div>
-<!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-<th:block th:insert="~{modules/common_js.html}" />
-<th:block th:insert="~{modules/footer.html}" />
+<th:block th:insert="~{modules/common_js}"/>
+
+<th:block th:insert="~{modules/footer}"/>

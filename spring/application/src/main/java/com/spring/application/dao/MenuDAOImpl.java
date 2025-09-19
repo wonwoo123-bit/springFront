@@ -1,7 +1,6 @@
 package com.spring.application.dao;
 
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;

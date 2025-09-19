@@ -1,6 +1,7 @@
 package com.spring.application.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class PdsVO {
     private int viewcnt;
     private Date regDate;
     private Date updateDate;
-    private Date startDate;
-    private Date endDate;
+
+    private List<AttachVO> attachList;
 
 }
