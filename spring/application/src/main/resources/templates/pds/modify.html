@@ -1,0 +1,189 @@
+<th:block th:insert="~{modules/header}" />
+<!-- summernote -->
+<link rel="stylesheet" th:href="@{/bootstrap/plugins/summernote/summernote-bs4.min.css}" />
+
+<div class="wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>자료실</h1>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="list"><i class="fa fa-dashboard"></i>자료실</a></li>
+                        <li class="breadcrumb-item active">리스트</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">자료 수정</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-warning" id="modifyBtn" onclick="modify_submit();">수
+                                정</button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-success" id="cancelBtn" onclick="history.go(-1);">취
+                                소</button>
+                        </div>
+                    </div><!--end card-header  -->
+                    <div class="card-body">
+                        <form enctype="multipart/form-data" role="form" method="post" action="modify" name="modifyForm">
+                            <input type="hidden" name="pno" th:value="${pds.pno }" />
+
+                            <div class="form-group">
+                                <label for="writer">작성자</label>
+                                <input type="text" id="writer" readonly name="writer" class="form-control"
+                                    th:value="${pds.writer }">
+                            </div>
+                            <div class="form-group">
+                                <label for="title">제 목</label>
+                                <span class="form-control" id="span-title" th:utext="${pds.title}"
+                                    contenteditable></span>
+                                <input type="hidden" id="title" name='title' class="form-control" placeholder="제목을 쓰세요">
+                            </div>
+                            <div class="form-group">
+                                <label for="content">내 용</label>
+                                <textarea id="content" class="form-control" rows="5" name="content"
+                                    th:text="${pds.content}"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="card card-outline card-success">
+                                    <div class="card-header">
+                                        <h3 style="display:inline;line-height:40px;">첨부파일 : </h3>
+                                        &nbsp;&nbsp;
+                                        <button class="btn btn-primary" onclick="addFile_go()" type="button"
+                                            id="addFileBtn">Add File</button>
+                                    </div>
+                                    <div class="card-footer fileInput">
+                                        <ul class="mailbox-attachments d-flex align-items-stretch clearfix">
+                                            <!-- 첨부파일 썸네일 -->
+                                            <li th:each="attach:${pds.attachList}"
+                                                th:class="|attach-item thumb${attach.ano}|"
+                                                th:file-name="${#strings.setSplit(attach.fileName,'\\$\\$')[1] }"
+                                                th:target-ano="${attach.ano }">
+                                                <div class="mailbox-attachment-info ">
+                                                    <a class="mailbox-attachment-name" name="attachedFile"
+                                                        th:href="@{/pds/getFile(ano=${attach.ano})} ">
+                                                        <i class="fas fa-paperclip"></i>
+                                                        [[${#strings.setSplit(attach.fileName,'\\$\\$')[1]}]]&nbsp;&nbsp;
+                                                        <button type="button"
+                                                            th:onclick="|removeFile_go('thumb${attach.ano}');return false;|"
+                                                            style="border:0;outline:0;" class="badge bg-red">X</button>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div><!--end card-body  -->
+                </div><!-- end card -->
+            </div><!-- end col-md-12 -->
+        </div><!-- end row -->
+    </section>
+</div>
+
+<th:block th:insert="~{modules/common_js}" />
+<!-- Summernote -->
+<script th:src="@{/bootstrap/plugins/summernote/summernote-bs4.min.js}"></script>
+<script>
+    summernote_go($('#content')[0], '[[@{/}]]');
+</script>
+
+<script>
+    function removeFile_go(className) {
+        // alert(className);
+        let li = $('li.' + className);
+        if (!confirm(li.attr("file-name") + "을 정말 삭제하시겠습니까?")) {
+            return;
+        }
+        li.remove();
+
+        var input = $('<input>').attr({
+            "type": "hidden",
+            "name": "deleteFile",
+            "value": li.attr("target-ano")
+        });
+        $('form[role="form"]').prepend(input);
+    }
+</script>
+<script>
+    var dataNum = 0;
+    function addFile_go() {
+        // alert("asd");
+        var attachedFile = $('a[name="attachedFile"]').length;
+        var inputFile = $('input[name="uploadFile"]').length;
+        var attachCount = attachedFile + inputFile;
+
+        if(attachCount >= 5){
+            alert("파일은 5개까지");
+            return;
+        }
+
+        var div = $('<div>').addClass("inputRow").attr("data-no", dataNum);
+        var input = $('<input>').attr({ "type": "file", "name": "uploadFile", "onchange":"fileChange_go("+dataNum+");" }).css("display", "inline");
+        div.append(input).append("<button onclick='remove_go(" + dataNum + ");' style='border:0;outline:0;'"
+            + " class='badge bg-red' type='button'>X</button>");
+        $('.fileInput').append(div);
+
+        dataNum++;
+    }
+     function remove_go(index) {
+        // alert(index);
+        $('div[data-no="' + index + '"]').remove();
+    }
+    function fileChange_go(dataNum){
+        let input = $('div[data-no="'+dataNum+ '"] input[type="file"]')[0];
+        let file = input.files[0];
+        if(file.size > 1024*1024*5){
+            alert("5메가 이하만 가능");
+            input.value = "";
+        }
+    }
+
+
+</script>
+
+<script>
+function modify_submit(){
+    // alert("Asd");
+    let form = $('form[name="modifyForm"]');
+
+    if($("#span-title").text() == ""){
+        alert("제목 필수");
+        $("#span-title").focus();
+        return;
+    }
+
+    $('input[name="title"]').val($('#span-title').text());
+
+    let files = $('input[name=uploadFile]');
+    for(var file of files){
+        if(file.value == ""){
+            alert("파일 선택");
+            file.focus();
+            file.click();
+            return;
+        }
+    }
+    form.submit();
+}
+</script>
+
+<th:block th:insert="~{modules/footer}" />

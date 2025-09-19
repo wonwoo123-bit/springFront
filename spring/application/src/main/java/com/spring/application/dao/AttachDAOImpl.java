@@ -22,7 +22,7 @@ public class AttachDAOImpl implements AttachDAO{
 
     @Override
     public void deleteAttachAll(int pno) throws SQLException {
-        sqlSession.delete("Attach-Mapper.deleteAttachAll",pno);
+        sqlSession.delete("Attach-Mapper.deleteAllAttach",pno);
         
     }
 

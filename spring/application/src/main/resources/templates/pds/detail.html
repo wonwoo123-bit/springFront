@@ -29,12 +29,12 @@
                 <div class="card card-outline card-primary">
                     <div class="card-header">
                         <h3 class="card-title">상세보기</h3>
-                        <div class="card-tools">
+                        <div class="card-tools"> <th:block th:if="${pds.writer} eq ${session.loginUser.id}">
                             <button type="button" id="modifyBtn" class="btn btn-warning"
                             th:onclick="|location.href='modifyForm?pno=${pds.pno}';|">Modify</button>
                         <button type="button" id="removeBtn" class="btn btn-danger"
                             th:onclick="|location.href='remove?pno=${pds.pno}';|">REMOVE</button>
-
+                                </th:block>
                         <button type="button" id="listBtn" class="btn btn-primary" onclick="CloseWindow();">CLOSE
                         </button>
                         </div>
