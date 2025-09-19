@@ -20,7 +20,7 @@ List<PdsVO> selectSearchPdsList(PageMaker pageMaker) throws SQLException;
 
     void deletePds (int pno) throws SQLException;
 
-    void increaseViewCount (int pno) throws SQLException;
+    void increaseViewCnt (int pno) throws SQLException;
 
     int selectPdsSeqNext () throws SQLException;
 

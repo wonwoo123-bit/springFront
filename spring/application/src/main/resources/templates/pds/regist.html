@@ -33,7 +33,8 @@
                             <button type="button" class="btn btn-primary" id="registBtn" onclick="regist_go();">등
                                 록</button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <button type="button" class="btn btn-warning" id="cancelBtn" onclick="CloseWindow();">취 소</button>
+                            <button type="button" class="btn btn-warning" id="cancelBtn" onclick="CloseWindow();">취
+                                소</button>
                         </div>
                     </div><!--end card-header  -->
                     <div class="card-body">
@@ -65,7 +66,6 @@
                             </div>
                         </form>
                     </div><!--end card-body  -->
-
                 </div><!-- end card -->
             </div><!-- end col-md-12 -->
         </div><!-- end row -->
@@ -76,9 +76,8 @@
 <th:block th:insert="~{modules/common_js}" />
 <!-- Summernote -->
 <script th:src="@{/bootstrap/plugins/summernote/summernote-bs4.min.js}"></script>
-
 <script>
-    summernote_go($("#content"), "[[@{/}]]");
+    summernote_go(document.querySelector("#content"), "[[@{/}]]");
 </script>
 
 <script>
@@ -87,47 +86,54 @@
     function addFile_go() {
 
         if ($('input[name="uploadFile"]').length >= 5) {
-            alert("최대5개");
+            alert("파일추가는 5개까지만 가능합니다.");
             return;
         }
+
+        //  alert("click add btn");
+        // $("<태그명>") , document.createElement("태그명")
         var div = $('<div>').addClass("inputRow").attr("data-no", dataNum);
         var input = $('<input>').attr({ "type": "file", "name": "uploadFile" }).css("display", "inline");
-        div.append(input).append("<button onclick='remove_go(" + dataNum + ");' style='boder:0;outline:0;'" + "class='badge bg-red' type='button'>X</button>");
+        div.append(input).append("<button onclick='remove_go(" + dataNum + ");' style='border:0;outline:0;'"
+            + " class='badge bg-red' type='button'>X</button>");
         $('.fileInput').append(div);
 
-        dataNum++
+        dataNum++;
     }
-    // 파일삭제
+
     function remove_go(index) {
+        // alert(index);
         $('div[data-no="' + index + '"]').remove();
     }
 
-    //파일 용량 제한
     $('.fileInput').on('change', "input[name='uploadFile']", function (event) {
         // alert(this.value);
         let input = $(this)[0];
         if (input.files[0].size > 1024 * 1024 * 5) {
-            alert("5메가 제한");
+            alert("첨부파일크기는 5MB 이하만 가능합니다.");
             input.value = "";
         }
     });
 </script>
 <script>
-    function regist_go(){
-        if($("input[name='title']").val()==""){
-            alert("제목필수");
+    function regist_go() {
+        //alert("click regist btn");
+        if ($("input[name='title']").val() == "") { //form.title.value
+            alert("제목은 필수입니다.");
             $("input[name='title']").focus();
             return;
         }
 
         var inputs = $('input[name="uploadFile"]');
-        for(var input of inputs){
-            alert("파일을 선택하세요.");
-            input.focus();
-            input.click();
-            return;
+        for (var input of inputs) {
+            if (input.value == "") {
+                alert("파일을 선택하세요.");
+                input.focus();
+                input.click();
+                return;
+            }
         }
+        $("form[role='form']").submit();
     }
 </script>
-
 <th:block th:insert="~{modules/footer}" />

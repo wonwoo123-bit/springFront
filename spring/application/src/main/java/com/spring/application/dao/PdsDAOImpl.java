@@ -23,8 +23,8 @@ public class PdsDAOImpl implements PdsDAO{
     }
 
     @Override
-    public void increaseViewCount(int pno) throws SQLException {
-        sqlSession.update("Pds-Mapper.increaseViewCount",pno);
+    public void increaseViewCnt(int pno) throws SQLException {
+        sqlSession.update("Pds-Mapper.increaseViewCnt",pno);
         
     }
 

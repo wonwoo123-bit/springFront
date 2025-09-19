@@ -38,7 +38,7 @@ public class PdsServiceImpl implements PdsService{
 
     @Override
     public void increaseViewCnt(int pno) throws SQLException {
-        pdsDAO.increaseViewCount(pno);
+        pdsDAO.increaseViewCnt(pno);
         
     }
 

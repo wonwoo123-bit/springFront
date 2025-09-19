@@ -67,6 +67,9 @@
 	<select id="selectPdsSeqNext" resultType="int">
 		select pds_seq.nextval as pno from dual
 	</select>
+	<select id="selectPdsByBno" resultType="pds">
+    SELECT * FROM pds WHERE pno = #{pno}
+	</select>
 	
 	
 	<select id="selectPdsByPno"  resultType="pds">
